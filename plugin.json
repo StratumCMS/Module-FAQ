@@ -1,0 +1,12 @@
+{
+    "id": "faq",
+    "name": "faq",
+    "version": "1.0.0",
+    "description": "FAQ Module for StratumCMS",
+    "authors": [
+        "StratumCMS"
+    ],
+    "providers": [
+        "\\Modules\\Faq\\Providers\\FaqServiceProvider"
+    ]
+}
