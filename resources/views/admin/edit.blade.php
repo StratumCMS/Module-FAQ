@@ -1,19 +1,20 @@
 @extends('admin.layouts.admin')
-
-@section('title', 'Modifier la faq : ', $item->name)
+@section('title', 'Modifier une FAQ')
 
 @section('content')
-    <div class="px-6 py-8">
-        <div class="mb-6">
-            <h1 class="text-2xl font-semibold">Crée une FAQ</h1>
+    <div class="px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+        <div class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium">
+            <a href="{{ route('admin.faq.index') }}"
+               class="border border-input bg-background hover:bg-accent hover:text-accent-foreground flex items-center gap-2 h-9 rounded-md px-3">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
         </div>
 
         @include('faq::admin._form', [
-    'item' => $item,
-    'categories'=> $categories,
-    'action' => route('admin.faq.update', $item),
-    'method' => 'PUT',
-])
-
+          'item' => $item,
+          'categories' => $categories,
+          'action' => route('admin.faq.update', $item),
+          'method' => 'PUT',
+        ])
     </div>
 @endsection
