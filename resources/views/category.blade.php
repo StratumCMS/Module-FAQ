@@ -20,7 +20,6 @@
     </section>
 
     <div x-data="{ q: '' }" class="mx-auto max-w-3xl px-4">
-        <!-- Recherche locale à la catégorie -->
         <div class="mb-8">
             <label class="sr-only" for="faq-cat-search">Rechercher dans la catégorie</label>
             <div class="relative">
@@ -55,7 +54,6 @@
             @endforeach
         </div>
 
-        <!-- Aucun résultat -->
         <template x-if="q !== '' && document.querySelectorAll('[x-cloak][style*=display\\: none]').length === document.querySelectorAll('[x-cloak]').length">
             <div class="mt-6 rounded-xl border bg-white/80 dark:bg-slate-800/80 backdrop-blur p-6 text-center">
                 <p class="text-sm text-muted-foreground">Aucun résultat pour « <span class="font-medium" x-text="q"></span> » dans cette catégorie.</p>

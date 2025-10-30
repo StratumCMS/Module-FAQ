@@ -17,7 +17,6 @@
     </section>
 
     <div x-data="{ q: '' }" class="mx-auto max-w-3xl px-4">
-        <!-- Barre de recherche -->
         <div class="mb-8">
             <label class="sr-only" for="faq-search">Rechercher</label>
             <div class="relative">
@@ -33,7 +32,6 @@
             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Astuce : tape “paiement”, “compte”, “sécurité”…</p>
         </div>
 
-        {{-- Bloc "Général" (FAQ sans catégorie) --}}
         @if($items->count())
             <div class="mb-10">
                 <h2 class="text-lg font-semibold mb-3 text-foreground">Général</h2>
@@ -59,7 +57,6 @@
             </div>
         @endif
 
-        {{-- Catégories --}}
         @foreach($categories as $cat)
             <section class="mb-10">
                 <div class="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -94,7 +91,6 @@
             </section>
         @endforeach
 
-        <!-- Message "aucun résultat" côté client -->
         <template x-if="q !== '' && document.querySelectorAll('[x-cloak][style*=display\\: none]').length === document.querySelectorAll('[x-cloak]').length">
             <div class="rounded-xl border bg-white/80 dark:bg-slate-800/80 backdrop-blur p-6 text-center">
                 <p class="text-sm text-muted-foreground">Aucun résultat pour « <span class="font-medium" x-text="q"></span> ».</p>

@@ -17,7 +17,6 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            {{-- LISTE — mobile en cartes --}}
             <div class="space-y-3 lg:space-y-0">
                 <div class="lg:hidden space-y-3">
                     @forelse($categories as $cat)
@@ -81,7 +80,6 @@
                     @endforelse
                 </div>
 
-                {{-- LISTE — desktop tableau --}}
                 <div class="hidden lg:block rounded-lg border bg-card text-card-foreground shadow-sm">
                     <div class="border-b bg-muted/10 px-4 py-3 font-medium">Catégories existantes</div>
                     <div class="overflow-auto">
@@ -156,7 +154,6 @@
                 </div>
             </div>
 
-            {{-- CRÉATION --}}
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                 <div class="border-b bg-muted/10 px-4 py-3 font-medium">Créer une catégorie</div>
                 <div class="p-4">
