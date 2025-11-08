@@ -21,5 +21,5 @@ Route::prefix('admin/faq')->middleware(['web', 'auth'])->group(function () {
 
 Route::prefix('faq')->group(function () {
     Route::get('/', [FaqController::class, 'index'])->name('faq.index');
-    Route::get('/{category:slug?}', [FaqController::class, 'category'])->name('faq.index');
+    Route::get('/{category:slug?}', [FaqController::class, 'category'])->name('faq.category');
 });
