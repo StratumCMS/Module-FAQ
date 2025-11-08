@@ -27,8 +27,7 @@ class FaqServiceProvider extends ServiceProvider
                 'type' => 'dropdown',
                 'icon' => 'fa-circle-question',
                 'items' => [
-                    'admin.faq.index' => ['name' => 'Liste'],
-                    'admin.faq.create' => ['name' => 'Nouveau'],
+                    'admin.faq.index' => ['name' => 'FAQ'],
                     'admin.faq.categories' => ['name' => 'Catégories'],
                 ],
             ],

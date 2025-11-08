@@ -15,12 +15,8 @@ class FaqAdminController extends Controller
     public function index()
     {
         $items = FaqItem::orderBy('position')->paginate(25);
-        return view('faq::admin.index', compact('items'));
-    }
-
-    public function create() {
         $categories = FaqCategory::orderBy('position')->get();
-        return view('faq::admin.create', compact('categories'));
+        return view('faq::admin.index', compact('items', 'categories'));
     }
 
     public function store(Request $request){
@@ -34,11 +30,6 @@ class FaqAdminController extends Controller
         $item = FaqItem::create($data + ['published' => (bool)($data['published'] ?? false)]);
         event(new FaqItemCreated($item));
         return redirect()->route('admin.faq.index')->with('status', 'FAQ créée.');
-    }
-
-    public function edit(FaqItem $item){
-        $categories = FaqCategory::orderBy('position')->get();
-        return view('faq::admin.edit', compact('item', 'categories'));
     }
 
     public function update(Request $request, FaqItem $item){

@@ -1,7 +1,7 @@
 {
     "id": "faq",
     "name": "faq",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "FAQ Module for StratumCMS",
     "authors": [
         "StratumCMS"

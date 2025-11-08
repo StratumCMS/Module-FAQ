@@ -124,13 +124,13 @@
                                 <td class="px-6 py-4 text-sm font-medium text-center align-middle">{{ $cat->name }}</td>
                                 <td class="px-6 py-4 text-sm text-muted-foreground text-center align-middle">
                                     <span class="inline-flex items-center gap-1.5 rounded-md bg-muted/50 px-2 py-1 font-mono text-xs">
-                                        <i class="fa-solid fa-link text-[10px]"></i>
+                                        <i class="fa-solid fa-link text-[10px] mr-1"></i>
                                         {{ $cat->slug }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-center align-middle">
                                     <span class="inline-flex items-center gap-1.5 rounded-full bg-muted/50 px-3 py-1 font-medium">
-                                        <i class="fa-solid fa-arrow-up-1-9 text-[10px] text-muted-foreground"></i>
+                                        <i class="fa-solid fa-arrow-up-1-9 text-[10px] text-muted-foreground mr-1"></i>
                                         {{ $cat->position }}
                                     </span>
                                 </td>
