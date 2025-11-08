@@ -21,26 +21,32 @@ class FaqAdminController extends Controller
 
     public function store(Request $request){
         $data = $request->validate([
-           'faq_category_id' => ['nullable', 'exists:faq_categories,id'],
+            'faq_category_id' => ['nullable', 'exists:faq_categories,id'],
             'question' => ['required', 'string', 'max:255'],
             'answer' => ['required', 'string'],
             'position' => ['nullable', 'integer', 'min:0'],
             'published' => ['nullable', 'boolean'],
         ]);
-        $item = FaqItem::create($data + ['published' => (bool)($data['published'] ?? false)]);
+
+        $published = isset($data['published']) && $data['published'];
+
+        $item = FaqItem::create($data + ['published' => $published]);
         event(new FaqItemCreated($item));
         return redirect()->route('admin.faq.index')->with('status', 'FAQ créée.');
     }
 
     public function update(Request $request, FaqItem $item){
         $data = $request->validate([
-           'faq_category_id' => ['nullable', 'exists:faq_categories,id'],
-           'question' => ['required', 'string', 'max:255'],
-           'answer' => ['required', 'string'],
-           'position' => ['nullable', 'integer', 'min:0'],
-           'published' => ['nullable', 'boolean'],
+            'faq_category_id' => ['nullable', 'exists:faq_categories,id'],
+            'question' => ['required', 'string', 'max:255'],
+            'answer' => ['required', 'string'],
+            'position' => ['nullable', 'integer', 'min:0'],
+            'published' => ['nullable', 'boolean'],
         ]);
-        $item->update($data + ['published' => (bool)($data['published'] ?? false)]);
+
+        $published = isset($data['published']) && $data['published'];
+
+        $item->update($data + ['published' => $published]);
         event(new FaqItemUpdated($item));
         return redirect()->route('admin.faq.index')->with('status', 'FAQ mis à jour.');
     }
@@ -63,18 +69,24 @@ class FaqAdminController extends Controller
             'position' => ['nullable', 'integer', 'min:0'],
             'is_public' => ['nullable', 'boolean'],
         ]);
-        FaqCategory::create($data + ['is_public' => (bool)($data['is_public'] ?? true)]);
+
+        $isPublic = isset($data['is_public']) && $data['is_public'];
+
+        FaqCategory::create($data + ['is_public' => $isPublic]);
         return back()->with('status', 'Catégorie créée.');
     }
 
     public function updateCategory(Request $request, FaqCategory $category){
         $data = $request->validate([
-           'name' => ['required', 'string', 'max:100'],
-           'slug' => ['required', 'alpha_dash', 'max:100', 'unique:faq_categories,slug,'.$category->id],
+            'name' => ['required', 'string', 'max:100'],
+            'slug' => ['required', 'alpha_dash', 'max:100', 'unique:faq_categories,slug,'.$category->id],
             'position' => ['nullable', 'integer', 'min:0'],
             'is_public' => ['nullable', 'boolean'],
         ]);
-        $category->update($data + ['is_public' => (bool)($data['is_public'] ?? true)]);
+
+        $isPublic = isset($data['is_public']) && $data['is_public'];
+
+        $category->update($data + ['is_public' => $isPublic]);
         return back()->with('status', 'Catégorie mise à jour');
     }
 
