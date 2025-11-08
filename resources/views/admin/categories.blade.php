@@ -1,9 +1,9 @@
 @extends('admin.layouts.admin')
+
 @section('title', 'Catégories FAQ')
 
 @section('content')
     <div class="px-4 py-6 sm:px-6 lg:px-8">
-        <!-- Header Section -->
         <div class="mb-6">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -18,7 +18,6 @@
             </div>
         </div>
 
-        <!-- Success Message -->
         @if(session('status'))
             <div class="mb-6 rounded-xl border-l-4 border-green-500 bg-green-50 p-4 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400">
                 <div class="flex items-start">
@@ -29,9 +28,7 @@
         @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Liste des catégories (2/3 de la largeur sur desktop) -->
             <div class="lg:col-span-2 space-y-4">
-                <!-- Stats rapides -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
                         <div class="flex items-center gap-3">
@@ -57,7 +54,6 @@
                     </div>
                 </div>
 
-                <!-- Mobile Card View -->
                 <div class="space-y-4 lg:hidden">
                     @forelse($categories as $cat)
                         <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
@@ -81,7 +77,6 @@
                                     <strong>{{ $cat->position }}</strong>
                                 </div>
 
-                                <!-- Actions Mobile -->
                                 <div class="flex gap-2 border-t border-border pt-3 mt-3">
                                     <button onclick="openEditModal({{ $cat->id }}, '{{ addslashes($cat->name) }}', '{{ $cat->slug }}', {{ $cat->position }}, {{ $cat->is_public ? 'true' : 'false' }})"
                                             class="flex-1 inline-flex items-center justify-center rounded-lg bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/20 transition-colors">
@@ -112,7 +107,6 @@
                     @endforelse
                 </div>
 
-                <!-- Desktop Table View -->
                 <div class="hidden lg:block overflow-hidden rounded-xl border border-border bg-card shadow-sm">
                     <table class="w-full">
                         <thead class="bg-muted/50">
@@ -179,7 +173,6 @@
                 </div>
             </div>
 
-            <!-- Formulaire de création (1/3 de la largeur sur desktop) -->
             <div class="lg:col-span-1">
                 <div class="rounded-xl border border-border bg-card shadow-sm overflow-hidden sticky top-6">
                     <div class="border-b border-border bg-muted/50 px-6 py-4">
@@ -260,25 +253,19 @@
         </div>
     </div>
 
-    <!-- Modal d'édition - Mobile First & Responsive -->
     <div id="editModal" class="fixed inset-0 z-50 hidden">
-        <!-- Backdrop -->
         <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
 
-        <!-- Modal Container - Mobile: bottom sheet, Desktop: centered -->
         <div class="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
-            <!-- Modal Content avec arrondis plus prononcés -->
-            <div class="relative bg-card w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl border-t sm:border border-border shadow-2xl max-h-[90vh] sm:max-h-[85vh] flex flex-col animate-slide-up sm:animate-fade-in overflow-hidden">
-                <!-- Header avec drag indicator sur mobile -->
-                <div class="border-b border-border bg-gradient-to-b from-muted/80 to-muted/40">
-                    <!-- Drag Indicator (mobile uniquement) -->
+            <div class="relative bg-card w-full sm:max-w-lg sm:rounded-xl rounded-xl border-t sm:border border-border shadow-2xl max-h-[90vh] sm:max-h-[85vh] flex flex-col animate-slide-up sm:animate-fade-in">
+                <div class="border-b border-border rounded-xl bg-muted/50">
                     <div class="sm:hidden flex justify-center pt-3 pb-2">
                         <div class="w-12 h-1.5 bg-muted-foreground/30 rounded-full"></div>
                     </div>
 
                     <div class="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="hidden sm:flex w-10 h-10 rounded-xl bg-primary/10 items-center justify-center">
+                            <div class="hidden sm:flex w-10 h-10 rounded-lg bg-primary/10 items-center justify-center">
                                 <i class="fa-solid fa-pen text-primary"></i>
                             </div>
                             <div>
@@ -287,121 +274,93 @@
                             </div>
                         </div>
                         <button onclick="closeEditModal()"
-                                class="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                                class="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
                                 aria-label="Fermer">
                             <i class="fa-solid fa-xmark text-lg"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Body with scroll -->
                 <div class="flex-1 overflow-y-auto overscroll-contain">
                     <div class="p-4 sm:p-6">
-                        <form id="editForm" method="POST" class="space-y-4 sm:space-y-5">
+                        <form id="editForm" method="POST" class="space-y-4">
                             @csrf @method('PUT')
-
-                            <!-- Nom -->
                             <div class="space-y-2">
                                 <label for="edit_name" class="text-sm font-medium flex items-center gap-2">
                                     <i class="fa-solid fa-tag text-muted-foreground text-xs"></i>
-                                    Nom de la catégorie
+                                    Nom
                                 </label>
                                 <input type="text"
                                        id="edit_name"
                                        name="name"
-                                       class="w-full h-12 px-4 rounded-xl border-2 border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all text-base"
+                                       class="w-full h-11 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all text-base"
                                        required
                                        maxlength="100"
                                        placeholder="Ex: Support technique">
                             </div>
 
-                            <!-- Slug -->
                             <div class="space-y-2">
                                 <label for="edit_slug" class="text-sm font-medium flex items-center gap-2">
                                     <i class="fa-solid fa-link text-muted-foreground text-xs"></i>
-                                    Slug (URL)
+                                    Slug
                                 </label>
                                 <input type="text"
                                        id="edit_slug"
                                        name="slug"
-                                       class="w-full h-12 px-4 rounded-xl border-2 border-input bg-background text-foreground font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                                       class="w-full h-11 px-4 rounded-lg border border-input bg-background text-foreground font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-all"
                                        required
                                        maxlength="100"
                                        placeholder="support-technique">
-                                <p class="text-xs text-muted-foreground flex items-center gap-1.5">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                    Utilisé dans l'URL de la catégorie
-                                </p>
                             </div>
 
-                            <!-- Position & Publique -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <!-- Position -->
-                                <div class="space-y-2">
-                                    <label for="edit_position" class="text-sm font-medium flex items-center gap-2">
-                                        <i class="fa-solid fa-arrow-up-1-9 text-muted-foreground text-xs"></i>
-                                        Position
-                                    </label>
-                                    <input type="number"
-                                           min="0"
-                                           id="edit_position"
-                                           name="position"
-                                           class="w-full h-12 px-4 rounded-xl border-2 border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all text-base">
-                                </div>
-
-                                <!-- Publique -->
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium flex items-center gap-2">
-                                        <i class="fa-solid fa-eye text-muted-foreground text-xs"></i>
-                                        Visibilité
-                                    </label>
-                                    <div class="flex items-center h-12">
-                                        <label class="inline-flex items-center gap-3 cursor-pointer group">
-                                            <div class="relative">
-                                                <input type="checkbox"
-                                                       id="edit_is_public"
-                                                       name="is_public"
-                                                       value="1"
-                                                       class="sr-only peer">
-                                                <div class="w-12 h-7 bg-muted rounded-full peer peer-checked:bg-primary transition-colors shadow-inner"></div>
-                                                <div class="absolute left-1 top-1 bg-background w-5 h-5 rounded-full transition-transform peer-checked:translate-x-5 shadow-md"></div>
-                                            </div>
-                                            <span class="text-sm font-medium group-hover:text-foreground transition-colors">Publique</span>
-                                        </label>
-                                    </div>
-                                </div>
+                            <div class="space-y-2">
+                                <label for="edit_position" class="text-sm font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-arrow-up-1-9 text-muted-foreground text-xs"></i>
+                                    Position
+                                </label>
+                                <input type="number"
+                                       min="0"
+                                       id="edit_position"
+                                       name="position"
+                                       class="w-full h-11 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all text-base">
                             </div>
 
-                            <!-- Info box avec design amélioré -->
-                            <div class="rounded-xl bg-primary/5 border border-primary/20 p-4">
-                                <div class="flex gap-3">
-                                    <div class="flex-shrink-0">
-                                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                                            <i class="fa-solid fa-lightbulb text-primary"></i>
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-eye text-muted-foreground text-xs"></i>
+                                    Visibilité
+                                </label>
+                                <div class="rounded-lg border border-input bg-background p-3">
+                                    <label class="inline-flex items-center gap-3 cursor-pointer group">
+                                        <div class="relative">
+                                            <input type="checkbox"
+                                                   id="edit_is_public"
+                                                   name="is_public"
+                                                   value="1"
+                                                   class="sr-only peer">
+                                            <div class="w-11 h-6 bg-muted rounded-full peer peer-checked:bg-primary transition-colors"></div>
+                                            <div class="absolute left-1 top-1 bg-background w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div>
                                         </div>
-                                    </div>
-                                    <div class="text-sm">
-                                        <p class="font-semibold text-foreground mb-1">💡 Conseil</p>
-                                        <p class="text-muted-foreground">Les catégories non publiques restent accessibles uniquement depuis l'administration.</p>
-                                    </div>
+                                        <span class="text-sm font-medium">Catégorie publique</span>
+                                    </label>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <div class="border-t border-border bg-gradient-to-t from-muted/40 to-muted/20 p-4 sm:p-6">
+                <div class="border-t border-border rounded-xl bg-muted/50 p-4 sm:p-6">
                     <div class="flex flex-col-reverse sm:flex-row gap-3">
                         <button type="button"
                                 onclick="closeEditModal()"
-                                class="flex-1 sm:flex-none inline-flex items-center justify-center rounded-xl border-2 border-border bg-background px-6 py-3 sm:py-2.5 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground hover:scale-[1.02]">
+                                class="flex-1 sm:flex-none inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 sm:py-2.5 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
                             Annuler
                         </button>
                         <button type="submit"
                                 form="editForm"
-                                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 sm:py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-lg shadow-primary/25">
+                                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 sm:py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-md">
                             <i class="fa-solid fa-check"></i>
-                            <span>Enregistrer les modifications</span>
+                            <span>Enregistrer</span>
                         </button>
                     </div>
                 </div>
