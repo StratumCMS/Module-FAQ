@@ -6,9 +6,7 @@ use Modules\Faq\Http\Controllers\FaqController;
 
 Route::prefix('admin/faq')->middleware(['web', 'auth'])->group(function () {
     Route::get('/', [FaqAdminController::class, 'index'])->name('admin.faq.index');
-    Route::get('/create', [FaqAdminController::class, 'create'])->name('admin.faq.create');
     Route::post('/', [FaqAdminController::class, 'store'])->name('admin.faq.store');
-    Route::get('/{item}/edit', [FaqAdminController::class, 'edit'])->name('admin.faq.edit');
     Route::put('/{item}', [FaqAdminController::class, 'update'])->name('admin.faq.update');
     Route::delete('/{item}', [FaqAdminController::class, 'destroy'])->name('admin.faq.destroy');
 

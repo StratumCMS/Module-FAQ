@@ -55,7 +55,7 @@
 
                 <div class="space-y-4 lg:hidden">
                     @forelse($items as $item)
-                        <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
+                        <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md">
                             <div class="p-4">
                                 <div class="flex items-start justify-between mb-3">
                                     <div class="min-w-0 flex-1">
@@ -77,8 +77,15 @@
                                 </div>
 
                                 <div class="flex gap-2 border-t border-border pt-3 mt-3">
-                                    <button onclick="openEditModal({{ $item->id }}, '{{ addslashes($item->question) }}', '{{ addslashes($item->answer) }}', {{ $item->faq_category_id ?? 'null' }}, {{ $item->position }}, {{ $item->published ? 'true' : 'false' }})"
-                                            class="flex-1 inline-flex items-center justify-center rounded-lg bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/20 transition-colors">
+                                    <button
+                                        class="flex-1 inline-flex items-center justify-center rounded-lg bg-primary/10 px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary/20 transition-colors"
+                                        onclick="openEditModal(this)"
+                                        data-id="{{ $item->id }}"
+                                        data-question="{{ $item->question }}"
+                                        data-answer="{{ $item->answer }}"
+                                        data-category_id="{{ $item->faq_category_id }}"
+                                        data-position="{{ $item->position }}"
+                                        data-published="{{ $item->published }}">
                                         <i class="fa-solid fa-pen mr-2"></i>
                                         Modifier
                                     </button>
@@ -140,8 +147,15 @@
                                 </td>
                                 <td class="px-6 py-4 text-center align-middle">
                                     <div class="flex items-center justify-center gap-2">
-                                        <button onclick="openEditModal({{ $item->id }}, '{{ addslashes($item->question) }}', '{{ addslashes($item->answer) }}', {{ $item->faq_category_id ?? 'null' }}, {{ $item->position }}, {{ $item->published ? 'true' : 'false' }})"
-                                                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
+                                        <button
+                                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
+                                            onclick="openEditModal(this)"
+                                            data-id="{{ $item->id }}"
+                                            data-question="{{ $item->question }}"
+                                            data-answer="{{ $item->answer }}"
+                                            data-category_id="{{ $item->faq_category_id }}"
+                                            data-position="{{ $item->position }}"
+                                            data-published="{{ $item->published }}">
                                             <i class="fas fa-pen"></i>
                                         </button>
                                         <form action="{{ route('admin.faq.destroy', $item) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette FAQ ? Cette action est irréversible.')">
@@ -401,16 +415,25 @@
 
     @push('scripts')
         <script>
-            function openEditModal(id, question, answer, categoryId, position, published) {
+            function openEditModal(button) {
                 const modal = document.getElementById('editModal');
                 const form = document.getElementById('editForm');
 
-                form.action = '{{ route("admin.faq.update", ":id") }}'.replace(':id', id);
-                document.getElementById('edit_question').value = question;
-                document.getElementById('edit_answer').value = answer;
-                document.getElementById('edit_faq_category_id').value = categoryId || '';
-                document.getElementById('edit_position').value = position;
-                document.getElementById('edit_published').checked = published;
+                const data = {
+                    id: button.dataset.id,
+                    question: button.dataset.question,
+                    answer: button.dataset.answer,
+                    category_id: button.dataset.category_id,
+                    position: button.dataset.position,
+                    published: button.dataset.published === "1",
+                };
+
+                form.action = '{{ route("admin.faq.update", ":id") }}'.replace(':id', data.id);
+                document.getElementById('edit_question').value = data.question;
+                document.getElementById('edit_answer').value = data.answer;
+                document.getElementById('edit_faq_category_id').value = data.category_id || '';
+                document.getElementById('edit_position').value = data.position;
+                document.getElementById('edit_published').checked = data.published;
 
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
@@ -444,8 +467,7 @@
 
             let startY = 0;
             let currentY = 0;
-            const modal = document.getElementById('editModal');
-            const modalContent = modal?.querySelector('.relative');
+            const modalContent = document.getElementById('editModal')?.querySelector('.relative');
 
             modalContent?.addEventListener('touchstart', (e) => {
                 startY = e.touches[0].clientY;
@@ -478,38 +500,16 @@
 
         <style>
             @keyframes slide-up {
-                from {
-                    transform: translateY(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateY(0);
-                    opacity: 1;
-                }
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
             }
-
             @keyframes fade-in {
-                from {
-                    opacity: 0;
-                    transform: scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1);
-                }
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
             }
-
-            .animate-slide-up {
-                animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-
-            .animate-fade-in {
-                animation: fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            }
-
-            .overscroll-contain {
-                overscroll-behavior: contain;
-            }
+            .animate-slide-up { animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+            .animate-fade-in { animation: fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+            .overscroll-contain { overscroll-behavior: contain; }
         </style>
     @endpush
 @endsection
